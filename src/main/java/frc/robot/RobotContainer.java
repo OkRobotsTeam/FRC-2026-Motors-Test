@@ -12,34 +12,31 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.subsystems.Motors;
+import frc.robot.subsystems.Motor;
 
 
 public class RobotContainer {
-    TalonFX Motor1 = new TalonFX(1);
-    TalonFX Motor2 = new TalonFX(2);
-    double speed1 = 0;
-    double speed2 = 0;
-    MotorSafety motors = new Motors();
+
+    Motor topShooter = new Motor(1);
+    Motor bottomShooter = new Motor(2);
+    Motor leftConveyor = new Motor(3);
+    Motor rightConveyor = new Motor(4);
     CommandXboxController controller = new CommandXboxController(0);
 
   public RobotContainer() {
-
-
     configureBindings();
   }
 
   private void configureBindings() {
-      controller.a().onTrue(Commands.runOnce((Motor1) -> faster),motors);
+      controller.a().onTrue(Commands.runOnce((topShooter::faster),topShooter));
+      controller.b().onTrue(Commands.runOnce((topShooter::slower),topShooter));
+      controller.povUp().onTrue(Commands.runOnce((bottomShooter::faster),bottomShooter));
+      controller.povDown().onTrue(Commands.runOnce((bottomShooter::slower),bottomShooter));
+      //controller.x().onTrue(Commands.runOnce(topShooter::stop,topShooter).andThen(Commands.runOnce(bottomShooter::stop,bottomShooter)));
+      controller.y().onTrue(Commands.runOnce(topShooter::toggleIsRunning, topShooter).andThen(bottomShooter::toggleIsRunning, bottomShooter));
   }
 
-  public void faster(TalonFX motor) {
-    DutyCycleOut control = new DutyCycleOut(
 
-    )
-    motor.setControl()
-    motor.dutyCyclemotor.getDutyCycle() + 0.1 
-  }
   public Command getAutonomousCommand() {
     return Commands.print("No autonomous command configured");
 
