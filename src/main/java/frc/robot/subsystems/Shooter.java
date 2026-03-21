@@ -1,9 +1,10 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix6.configs.MotorOutputConfigs;
 import com.ctre.phoenix6.controls.DutyCycleOut;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
@@ -12,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  */
 public class Shooter extends SubsystemBase {
     private static final int BOTTOM_ID = 1;
-    private static final int TOP_ID = 2;
+    private static final int TOP_ID = 4;
     private static final int TICKS_PER_REV = 2048; // TalonFX integrated sensor
 
     private final TalonFX bottom;
@@ -25,9 +26,8 @@ public class Shooter extends SubsystemBase {
         top = new TalonFX(TOP_ID);
 
         var configs = new MotorOutputConfigs();
-        configs.Inverted = InvertedValue.Clockwise_Positive; 
-        configs.NeutralMode = NeutralMode.Brake;
-        configs.resetEncoder = true;
+        configs.Inverted = InvertedValue.Clockwise_Positive;
+        configs.NeutralMode = NeutralModeValue.Brake;
         top.getConfigurator().apply(configs);
         configs.Inverted = InvertedValue.CounterClockwise_Positive;
         bottom.getConfigurator().apply(configs);

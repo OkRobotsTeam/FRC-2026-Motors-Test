@@ -18,9 +18,9 @@ import frc.robot.subsystems.Motor;
 public class RobotContainer {
 
     Motor topShooter = new Motor(1);
-    Motor bottomShooter = new Motor(2);
-    Motor leftConveyor = new Motor(3);
-    Motor rightConveyor = new Motor(4);
+    Motor bottomShooter = new Motor(4);
+//    Motor leftConveyor = new Motor(3);
+//    Motor rightConveyor = new Motor(4);
     CommandXboxController controller = new CommandXboxController(0);
 
   public RobotContainer() {
@@ -28,12 +28,12 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-      controller.a().onTrue(Commands.runOnce((topShooter::faster),topShooter));
-      controller.b().onTrue(Commands.runOnce((topShooter::slower),topShooter));
-      controller.povUp().onTrue(Commands.runOnce((bottomShooter::faster),bottomShooter));
-      controller.povDown().onTrue(Commands.runOnce((bottomShooter::slower),bottomShooter));
+      controller.povUp().onTrue(Commands.runOnce((topShooter::faster),topShooter));
+      controller.povDown().onTrue(Commands.runOnce((topShooter::slower),topShooter));
+      controller.x().onTrue(Commands.runOnce((() -> bottomShooter.setPercent(40)), bottomShooter));
+      controller.x().onFalse(Commands.runOnce((() -> bottomShooter.setPercent(0)), bottomShooter));
       //controller.x().onTrue(Commands.runOnce(topShooter::stop,topShooter).andThen(Commands.runOnce(bottomShooter::stop,bottomShooter)));
-      controller.y().onTrue(Commands.runOnce(topShooter::toggleIsRunning, topShooter).andThen(bottomShooter::toggleIsRunning, bottomShooter));
+      controller.y().onTrue(Commands.runOnce(topShooter::toggleIsRunning, topShooter));
   }
 
 
